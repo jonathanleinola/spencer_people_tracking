@@ -1,6 +1,6 @@
 <launch>
     <!-- Launch file arguments -->
-    <arg name="height_above_ground" default="1.6"/>  <!-- in meters, assumes a horizontally oriented RGB-D sensor; important for accurate detection -->
+    <arg name="height_above_ground" default="0.61"/>  <!-- in meters, assumes a horizontally oriented RGB-D sensor; important for accurate detection -->
     <arg name="load_driver" default="true"/>  <!-- set to false if you are already running OpenNi from elsewhere -->
     <arg name="visualization" default="true"/> <!-- start Rviz with predefined configuration? -->
     <arg name="dummy_transforms" default="true"/> <!-- publish TF transform for sensor to groundplane -->
@@ -10,8 +10,8 @@
     <arg name="use_hog_detector" default="false"/> <!-- use RGB groundHOG detector? Requires cudaHOG library-->
 
     <!-- TF frame IDs used by some detectors, and tracking components -->
-    <arg name="base_footprint_frame_id" default="base_footprint"/>  <!-- name of the robot's base frame after projection onto the ground plane -->
-    <arg name="world_frame_id" default="odom"/>  <!-- this is the fixed tracking frame -->
+    <arg name="base_footprint_frame_id" default="base_link"/>  <!-- name of the robot's base frame after projection onto the ground plane -->
+    <arg name="world_frame_id" default="base_link"/>  <!-- this is the fixed tracking frame -->
 
     <!-- Run OpenNi driver if desired -->
     <group ns="spencer/sensors" if="$(arg load_driver)">
@@ -31,7 +31,7 @@
 
     <!-- Set up dummy transforms into an imaginary robot and odom frame -->
     <group if="$(arg dummy_transforms)">
-        <node name="tf_base_footprint" pkg="tf" type="static_transform_publisher" args="0 0 $(arg height_above_ground) 0 0 0 $(arg base_footprint_frame_id) rgbd_front_top_link 10"/>
+        <node name="tf_base_footprint" pkg="tf" type="static_transform_publisher" args="0.25 0 $(arg height_above_ground) 0 0 0 $(arg base_footprint_frame_id) rgbd_front_top_link 10"/>
         <node name="tf_odom"           pkg="tf" type="static_transform_publisher" args="0 0 0 0 0 0 odom $(arg base_footprint_frame_id) 10"/>
     </group>
 
